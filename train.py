@@ -26,8 +26,8 @@ data = mnist.read_data_sets()
 
 saver = tf.train.Saver()
 if os.path.exists(save_path):
- 	saver.restore(model.sess, save_path)
- 	print 'restore'
+	saver.restore(model.sess, save_path)
+	print 'restore'
 
 
 for epoch in range(outter_epoch):
