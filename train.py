@@ -9,7 +9,7 @@ import cmtf.data.data_mnist as mnist
 save_path = 'output/checkpoint.ckpt'
 batch_size = 128
 hidden_size = 128
-learning_rate = 1e-2
+learning_rate = 1e-3
 outter_epoch = 10000
 inner_epoch = 10
 

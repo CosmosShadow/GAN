@@ -24,12 +24,12 @@ class GAN(object):
 			with tf.variable_scope("model", reuse=True):
 				D2 = discriminator(G)  # generated examples
 
-		D_loss = self.__get_discrinator_loss(D1, D2)
-		G_loss = self.__get_generator_loss(D2)
-
 		params = tf.trainable_variables()
 		D_params = params[:D_params_num]
 		G_params = params[D_params_num:]
+
+		D_loss = self.__get_discrinator_loss(D1, D2) + tf.add_n([tf.nn.l2_loss(v) for v in D_params]) * 0.1
+		G_loss = self.__get_generator_loss(D2) + tf.add_n([tf.nn.l2_loss(v) for v in G_params]) * 0.1
 
 		global_step = tf.contrib.framework.get_or_create_global_step()
 		self.train_discrimator = layers.optimize_loss(D_loss, global_step, learning_rate / 10, 'Adam', variables=D_params, update_ops=[])
