@@ -45,7 +45,7 @@ class GAN(object):
 
 
 	def __get_discrinator_loss(self, D1, D2):
-		return (losses.sigmoid_cross_entropy(D1, tf.ones(tf.shape(D1))) + 
+		return (losses.sigmoid_cross_entropy(D1, tf.ones(tf.shape(D1))*0.9) + 
 		        losses.sigmoid_cross_entropy(D2, tf.zeros(tf.shape(D1))))
 
 	def __get_generator_loss(self, D2):
