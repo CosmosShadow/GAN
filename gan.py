@@ -30,12 +30,18 @@ class GAN(object):
 		params = tf.trainable_variables()
 		D_params = params[:D_params_num]
 		G_params = params[D_params_num:]
+		print G_params
 
 		global_step = tf.contrib.framework.get_or_create_global_step()
 		self.train_discrimator = layers.optimize_loss(D_loss, global_step, learning_rate / 10, 'Adam', variables=D_params, update_ops=[])
 		self.train_generator = layers.optimize_loss(G_loss, global_step, learning_rate, 'Adam', variables=G_params, update_ops=[])
 
-		self.sess = tf.Session()
+		# GPU
+		config = tf.ConfigProto()
+		config.gpu_options.per_process_gpu_memory_fraction = 0.8
+		config.gpu_options.allow_growth = True
+
+		self.sess = tf.Session(config=config)
 		self.sess.run(tf.initialize_all_variables())
 
 
@@ -47,7 +53,8 @@ class GAN(object):
 		return losses.sigmoid_cross_entropy(D2, tf.ones(tf.shape(D2)))
 
 	def update_params(self, inputs):
-		d_loss_value = self.sess.run(self.train_discrimator, {self.input_tensor: inputs})
+		d_loss_value = self.sess.run(self.train_discrimator, feed_dict={self.input_tensor: inputs})
+		print d_loss_value
 		g_loss_value = self.sess.run(self.train_generator)
 		return g_loss_value
 
