@@ -49,7 +49,7 @@ class GAN(object):
 		        losses.sigmoid_cross_entropy(D2, tf.zeros(tf.shape(D1))))
 
 	def __get_generator_loss(self, D2):
-		return losses.sigmoid_cross_entropy(D2, tf.ones(tf.shape(D2)))
+		return losses.sigmoid_cross_entropy(D2, tf.ones(tf.shape(D2))*0.9)
 
 	def update_params(self, inputs):
 		d_loss_value = self.sess.run(self.train_discrimator, feed_dict={self.input_tensor: inputs})
