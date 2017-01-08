@@ -54,7 +54,7 @@ class GAN(object):
 	def update_params(self, inputs):
 		d_loss_value = self.sess.run(self.train_discrimator, feed_dict={self.input_tensor: inputs})
 		g_loss_value = self.sess.run(self.train_generator, feed_dict={self.input_tensor: inputs})		#this is a bug cuased by tensorflow 0.9
-		return g_loss_value
+		return d_loss_value, g_loss_value
 
 
 def concat_elu(inputs):

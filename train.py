@@ -25,18 +25,20 @@ data = mnist.read_data_sets()
 
 
 saver = tf.train.Saver()
-if os.path.exists(save_path):
-	saver.restore(model.sess, save_path)
-	print 'restore'
+# if os.path.exists(save_path):
+# 	saver.restore(model.sess, save_path)
+# 	print 'restore'
 
 
 for epoch in range(outter_epoch):
-	loss_arr = []
+	d_loss_arr = []
+	g_loss_arr = []
 	for _ in range(inner_epoch):
 		x_, _ = data.train.next_batch(batch_size)
-		loss = model.update_params(x_)
-		loss_arr.append(loss)
-	str_output = 'epoch: %d   loss: %.3f' %(epoch+1, np.mean(np.array(loss_arr)))
+		d_loss, g_loss = model.update_params(x_)
+		d_loss_arr.append(d_loss)
+		g_loss_arr.append(g_loss)
+	str_output = 'epoch: %d   d_loss: %.3f   g_loss: %.3f' %(epoch+1, np.mean(np.array(d_loss_arr)), np.mean(np.array(g_loss_arr)))
 	if (epoch+1)%100 == 0:
 		saver.save(model.sess, save_path)
 		str_output += '   save'
